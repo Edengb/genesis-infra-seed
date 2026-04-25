@@ -1,0 +1,16 @@
+# Terraform local state
+*.tfstate
+*.tfstate.*
+*.tfplan
+
+# Terraform plugins and cache
+.terraform/
+.terraform.lock.hcl
+
+# Sensitive variable values
+*.tfvars
+*.tfvars.json
+
+# Credentials and secrets
+.env
+*.pem
