@@ -1,0 +1,53 @@
+name: "Terraform CI/CD"
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+# Core permissions required for OIDC and Repo access
+permissions:
+  id-token: write # Required for requesting the JWT from AWS
+  contents: read  # Required for actions/checkout
+
+jobs:
+  terraform:
+    name: "Terraform Plan & Apply"
+    runs-on: ubuntu-latest
+    
+    # Environment variables to keep the steps clean
+    env:
+      AWS_REGION: "us-east-1"
+      ROLE_TO_ASSUME: "arn:aws:iam::858358516776:role/genesis-seed-manager-role"
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ env.ROLE_TO_ASSUME }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.10.0"
+
+      - name: Terraform Init
+        run: |
+          terraform init \
+            -backend-config="bucket=genesis-tfstate-858358516776-us-east-1" \
+            -backend-config="key=genesis/terraform.tfstate" \
+            -backend-config="region=us-east-1" \
+            -backend-config="use_lockfile=true"
+
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -no-color -out=main.tfplan
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform apply -auto-approve main.tfplan

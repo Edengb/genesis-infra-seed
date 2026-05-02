@@ -1,0 +1,19 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "GenesisStateManagement",
+            "Effect": "Allow",
+            "Action": [
+                "s3:Get*",
+                "s3:Put*",
+                "s3:List*",
+                "s3:DeleteObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::genesis-tfstate-${aws_account_id}-${aws_region}",
+                "arn:aws:s3:::genesis-tfstate-${aws_account_id}-${aws_region}/*"
+            ]
+        }
+    ]
+}
