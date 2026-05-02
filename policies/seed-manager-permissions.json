@@ -14,6 +14,16 @@
                 "arn:aws:s3:::genesis-tfstate-${aws_account_id}-${aws_region}",
                 "arn:aws:s3:::genesis-tfstate-${aws_account_id}-${aws_region}/*"
             ]
+        },
+        {
+            "Sid": "GenesisReadPermissions",
+            "Effect": "Allow",
+            "Action": [
+                "iam:Get*",
+                "iam:List*",
+                "s3:GetBucketPolicy"
+            ],
+            "Resource": "*"
         }
     ]
 }
