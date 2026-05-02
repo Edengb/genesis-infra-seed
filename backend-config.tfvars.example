@@ -1,0 +1,14 @@
+# The name of the S3 bucket created for Terraform state
+bucket       = "your-unique-bucket-name-here"
+
+# The path within the bucket where the state file will live
+key          = "project-name/terraform.tfstate"
+
+# The AWS region where the bucket is located
+region       = "us-east-1"
+
+# Enable server-side encryption for the state file
+encrypt      = true
+
+# Enable native S3 state locking (Requires Terraform 1.10+)
+use_lockfile = true

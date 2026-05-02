@@ -1,5 +1,6 @@
 resource "aws_s3_bucket" "tfstate" {
   bucket = "genesis-tfstate-${var.aws_account_id}-${var.aws_region}"
+
 }
 
 resource "aws_s3_bucket_ownership_controls" "tfstate" {
